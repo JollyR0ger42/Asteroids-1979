@@ -1,5 +1,5 @@
 // starting data
-const FPS = 30; // frame per sec
+const FPS = 60; // frame per sec
 const canvas = document.getElementById('gameWorld'); // canvas context
 
 // game modules
