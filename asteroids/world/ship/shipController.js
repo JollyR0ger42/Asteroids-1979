@@ -5,6 +5,7 @@ export default function createShipController(ship, FPS){
         ship.rotate(1 / FPS)
         break;
       case 'thrust_on':
+        ship.toggleThrust(1 / FPS)
         break;
       case 'rotateRight_on':
         ship.rotate(-1 / FPS)
@@ -14,6 +15,7 @@ export default function createShipController(ship, FPS){
         ship.rotate(0)
         break;
       case 'thrust_off':
+        ship.toggleThrust(0)
         break;
     }
   }
@@ -23,23 +25,3 @@ export default function createShipController(ship, FPS){
     dispatch
   }
 }
-  // function keyDown(ev){
-  //   switch(ev.keyCode){
-  //     case 37: // left arrow, rotate left
-  //       player.rotate(1 / FPS)
-  //       break;
-  //     case 38: // up arrow, thrust
-  //       break;
-  //     case 39: // right arrow, rotate right
-  //       player.rotate(-1 / FPS)
-  //   }
-  // }
-
-  // function keyUp(ev){
-  //   switch(ev.keyCode){
-  //     case 37: 
-  //     case 38:
-  //     case 39:
-  //       player.rotate(0)
-  //   }
-  // }
