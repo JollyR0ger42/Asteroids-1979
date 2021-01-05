@@ -1,4 +1,4 @@
-export const inputCfg = {
+export const shipControll = {
   'ArrowLeft': 'rotateLeft',
   'ArrowUp': 'thrust',
   'ArrowRight': 'rotateRight',
