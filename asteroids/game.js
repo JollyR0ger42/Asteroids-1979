@@ -12,6 +12,8 @@ import createInput from './input/input.js'
 // init
 const gameWorld = createWorld(canvas.width, canvas.height, FPS);
 const gameRender = createRender(canvas, gameWorld.objects);
+const inputPublisher = createInput();
+
+inputPublisher.subscribe(gameWorld.controllers[0])
 
 initLoop(gameWorld, gameRender, FPS)
-createInput(gameWorld.controllers[0], FPS)
