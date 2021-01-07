@@ -7,9 +7,9 @@ export default function createRender(canvas, WORLD){
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
 
     // draw WORLD
-    ctx.strokeStyle = 'white'
     WORLD.forEach(el => {
       const shape = el.getShape();
+      ctx.strokeStyle = shape.color || 'white'
       ctx.lineWidth = shape.lineWidth
       ctx.beginPath()
       ctx.moveTo(...shape.points[0])

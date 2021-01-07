@@ -1,4 +1,5 @@
-export default function createShip(posX, posY, length = 20){
+export default function createShip(posX, posY){
+  const SHIP_LENGTH = 15;
   const TURN_SPEED = 360; // degrees per sec
   const SHIP_THRUST = 5; // acceleration in px per sec
   const FRICTION = 0.33; // ship slowdown
@@ -6,25 +7,26 @@ export default function createShip(posX, posY, length = 20){
 
   function getShape(){
     const result = {
-      lineWidth: length / 10,
-      points: []
+      lineWidth: SHIP_LENGTH / 10,
+      points: [],
+      color: 'white'
     };
 
     result.points.push([
-      this.x + length * Math.cos(this.angle), 
-      this.y - length * Math.sin(this.angle)
+      this.x + this.size * Math.cos(this.angle), 
+      this.y - this.size * Math.sin(this.angle)
     ]) // nose
     result.points.push([
-      this.x + length * Math.cos(this.angle + 150 / 180 * Math.PI), 
-      this.y - length * Math.sin(this.angle + 150 / 180 * Math.PI)
+      this.x + this.size * Math.cos(this.angle + 150 / 180 * Math.PI), 
+      this.y - this.size * Math.sin(this.angle + 150 / 180 * Math.PI)
     ]) // left corner
     result.points.push([
-      this.x + length * Math.cos(this.angle +  Math.PI) * 0.75, // 0.75 - for curvy back
-      this.y - length * Math.sin(this.angle +  Math.PI) * 0.75
+      this.x + this.size * Math.cos(this.angle +  Math.PI) * 0.75, // 0.75 - for curvy back
+      this.y - this.size * Math.sin(this.angle +  Math.PI) * 0.75
     ]) // back
     result.points.push([
-      this.x + length * Math.cos(this.angle - 150 / 180 * Math.PI), 
-      this.y - length * Math.sin(this.angle - 150 / 180 * Math.PI)
+      this.x + this.size * Math.cos(this.angle - 150 / 180 * Math.PI), 
+      this.y - this.size * Math.sin(this.angle - 150 / 180 * Math.PI)
     ]) // right corner
 
     return result
@@ -61,7 +63,7 @@ export default function createShip(posX, posY, length = 20){
   return {
     x: posX,
     y: posY,
-    size: length,
+    size: SHIP_LENGTH,
     acceleration: {x: 0, y: 0},
     thrusting: 0,
     angle: 90 / 180 * Math.PI,
