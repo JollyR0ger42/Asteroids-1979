@@ -1,7 +1,7 @@
 import createAsteroid from './asteroid.js';
 
 export default function createAsteroidsBelt(ammount, worldWidth, worldHeight, FPS = 30){
-  const SAFE_ZONE_RADIUS = 200;
+  const SAFE_ZONE_RADIUS = 200; // dist from center without asteroids
 
   const result = [];
   for(let i = 0; i < ammount; i++){

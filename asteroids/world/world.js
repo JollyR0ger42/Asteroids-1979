@@ -28,7 +28,7 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
   
   const ship = createShip(width / 2, height / 2, 20);
   const shipController = createShipController(ship, FPS);
-  const asteroidsBelt = createAsteroidsBelt(100, width, height)
+  const asteroidsBelt = createAsteroidsBelt(20, width, height)
 
   result.objects.push(ship)
   result.controllers.push(shipController)
