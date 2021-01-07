@@ -1,12 +1,14 @@
 export default function createAsteroid(posX, posY){
-  const ASTEROID_SPEED = 5; // px per sec
+  const ASTEROID_SPEED = 10; // px per sec
   const ASTEROID_SIZE = 50; // asteriod diameter in px
   const ASTEROID_VERTS = 10; // avarage verts ammount
   const ASTEROID_JAG = 0.5; // jaggednest
+  const ASTEROID_ROT = 15 / 180 * Math.PI; // avarage rotation speed in rad
   
   function randomLaunch(FPS = 30){
     this.velocity.x = (Math.random() + 0.1) * ASTEROID_SPEED * (Math.random() < 0.5 ? 1 : -1) / FPS
     this.velocity.y = (Math.random() + 0.1) * ASTEROID_SPEED * (Math.random() < 0.5 ? 1 : -1) / FPS
+    this.rotation = Math.random() * ASTEROID_ROT / FPS
   }
 
   function getShape(){
@@ -26,7 +28,9 @@ export default function createAsteroid(posX, posY){
   }
 
   function update(){
-
+    this.x += this.velocity.x
+    this.y += this.velocity.y
+    this.angle += this.rotation
   }
 
   // create verts offsets array
@@ -44,6 +48,7 @@ export default function createAsteroid(posX, posY){
     angle: Math.PI * 2 * Math.random(),
     verts: verts,
     offsets: offsets,
+    rotation: 0,
     // methods
     randomLaunch,
     getShape,
