@@ -1,6 +1,7 @@
 import createShip from './ship/ship.js';
 import createShipController from './ship/shipController.js';
 import createAsteroidsBelt from './asteroid/createAsteroidsBelt.js';
+import createCollision from './collision.js';
 
 export default function createWorld(width = 100, height = 100, FPS = 30){
   function update(){
@@ -29,7 +30,7 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
     targets.forEach(obj => obj.emmit = this.emmit)
   }
 
-  const result = {
+  const world = {
     objects: [],
     controllers: [],
     update,
@@ -41,10 +42,11 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
   const shipController = createShipController(ship, FPS);
   const asteroidsBelt = createAsteroidsBelt(20, width, height)
 
-  result.objects.push(ship)
-  result.controllers.push(shipController)
-  result.objects.push(...asteroidsBelt)
+  world.objects.push(ship)
+  world.controllers.push(shipController)
+  world.objects.push(...asteroidsBelt)
   
-  result.init()
-  return result
+  world.init()
+  createCollision(world.objects)
+  return world
 }
