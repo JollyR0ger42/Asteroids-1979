@@ -20,10 +20,21 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
     })
   }
 
+  function emmit(eventName, payload){
+    console.log(eventName, payload)
+  }
+
+  function init(target){
+    const targets = target ? [target] : this.objects;
+    targets.forEach(obj => obj.emmit = this.emmit)
+  }
+
   const result = {
     objects: [],
     controllers: [],
     update,
+    init,
+    emmit,
   };
   
   const ship = createShip(width / 2, height / 2, 20);
@@ -34,5 +45,6 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
   result.controllers.push(shipController)
   result.objects.push(...asteroidsBelt)
   
+  result.init()
   return result
 }
