@@ -1,7 +1,7 @@
 import createShip from './ship/ship.js';
 import createShipController from './ship/shipController.js';
 import createAsteroidsBelt from './asteroid/createAsteroidsBelt.js';
-import createCollision from './collision.js';
+import createCollision from './collision/collision.js';
 
 export default function createWorld(width = 100, height = 100, FPS = 30){
   function update(){
