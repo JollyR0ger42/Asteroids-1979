@@ -9,7 +9,7 @@ export default function createShip(posX, posY){
     const result = {
       lineWidth: SHIP_LENGTH / 10,
       points: [],
-      color: 'white'
+      color: this.collisions.length > 0 ? 'red' : 'white'
     };
 
     result.points.push([
@@ -51,6 +51,14 @@ export default function createShip(posX, posY){
     ship.acceleration.y -= FRICTION * ship.acceleration.y * lastThrusting
   }
 
+  function collideWith(object){
+    this.collisions.push(object)
+  }
+
+  function resetCollision(){
+    this.collisions = [];
+  }
+
   function update(){
     this.angle += this.rotation
     if(this.thrusting) this.thrust()
@@ -68,11 +76,14 @@ export default function createShip(posX, posY){
     thrusting: 0,
     angle: 90 / 180 * Math.PI,
     rotation: 0,
+    collisions: [],
     // methods
     getShape,
     rotate,
     toggleThrust,
     thrust,
     update,
+    collideWith,
+    resetCollision,
   }
 }

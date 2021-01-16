@@ -1,8 +1,8 @@
 export default function createAsteroid(posX, posY){
-  const ASTEROID_SPEED = 10; // px per sec
+  const ASTEROID_SPEED = 20; // px per sec
   const ASTEROID_SIZE = 50; // asteriod diameter in px
   const ASTEROID_VERTS = 10; // avarage verts ammount
-  const ASTEROID_JAG = 0.33; // jaggednest
+  const ASTEROID_JAG = 0.3; // jaggednest
   const ASTEROID_ROT = 15 / 180 * Math.PI; // avarage rotation speed in rad
   
   function randomLaunch(FPS = 30){
@@ -15,7 +15,7 @@ export default function createAsteroid(posX, posY){
     const result = {
       lineWidth: ASTEROID_SIZE / 20,
       points: [],
-      color: 'slategrey'
+      color: this.collisions.length > 0 ? 'red' : 'slategrey'
     };
 
     for(let i = 0; i < this.verts; i++){
@@ -25,6 +25,14 @@ export default function createAsteroid(posX, posY){
       ])
     }
     return result
+  }
+
+  function collideWith(object){
+    this.collisions.push(object)
+  }
+
+  function resetCollision(){
+    this.collisions = [];
   }
 
   function update(){
@@ -49,9 +57,12 @@ export default function createAsteroid(posX, posY){
     verts: verts,
     offsets: offsets,
     rotation: 0,
+    collisions: [],
     // methods
     randomLaunch,
     getShape,
     update,
+    collideWith,
+    resetCollision,
   }
 }
