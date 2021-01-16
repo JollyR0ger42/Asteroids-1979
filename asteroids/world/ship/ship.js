@@ -41,9 +41,9 @@ export default function createShip(posX, posY){
     lastThrusting = coef || lastThrusting
   }
   
-  function thrust(){
-    this.acceleration.x += SHIP_THRUST * Math.cos(this.angle) * this.thrusting
-    this.acceleration.y += SHIP_THRUST * Math.sin(this.angle) * this.thrusting
+  function thrust(ship){
+    ship.acceleration.x += SHIP_THRUST * Math.cos(ship.angle) * ship.thrusting
+    ship.acceleration.y += SHIP_THRUST * Math.sin(ship.angle) * ship.thrusting
   }
 
   function slowDown(ship){
@@ -61,14 +61,14 @@ export default function createShip(posX, posY){
 
   function update(){
     this.angle += this.rotation
-    if(this.thrusting) this.thrust()
+    if(this.thrusting) thrust(this)
     else slowDown(this);
     this.x += this.acceleration.x
     this.y -= this.acceleration.y
-    // console.log('SPEED', Math.sqrt(this.acceleration.x ** 2 + this.acceleration.y ** 2))
   }
 
   return {
+    category: 'ship',
     x: posX,
     y: posY,
     size: SHIP_LENGTH,
@@ -81,7 +81,6 @@ export default function createShip(posX, posY){
     getShape,
     rotate,
     toggleThrust,
-    thrust,
     update,
     collideWith,
     resetCollision,

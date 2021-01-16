@@ -49,6 +49,7 @@ export default function createAsteroid(posX, posY){
   }
 
   return {
+    category: 'asteroid',
     x: posX,
     y: posY,
     velocity: {x: 0, y: 0,},
