@@ -2,7 +2,7 @@ export default function createAsteroid(posX, posY){
   const ASTEROID_SPEED = 10; // px per sec
   const ASTEROID_SIZE = 50; // asteriod diameter in px
   const ASTEROID_VERTS = 10; // avarage verts ammount
-  const ASTEROID_JAG = 0.5; // jaggednest
+  const ASTEROID_JAG = 0.33; // jaggednest
   const ASTEROID_ROT = 15 / 180 * Math.PI; // avarage rotation speed in rad
   
   function randomLaunch(FPS = 30){

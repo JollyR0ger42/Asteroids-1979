@@ -17,16 +17,16 @@ export default function createShip(posX, posY){
       this.y - this.size * Math.sin(this.angle)
     ]) // nose
     result.points.push([
-      this.x + this.size * Math.cos(this.angle + 150 / 180 * Math.PI), 
-      this.y - this.size * Math.sin(this.angle + 150 / 180 * Math.PI)
+      this.x + this.size * Math.cos(this.angle + 145 / 180 * Math.PI), 
+      this.y - this.size * Math.sin(this.angle + 145 / 180 * Math.PI)
     ]) // left corner
     result.points.push([
       this.x + this.size * Math.cos(this.angle +  Math.PI) * 0.75, // 0.75 - for curvy back
       this.y - this.size * Math.sin(this.angle +  Math.PI) * 0.75
     ]) // back
     result.points.push([
-      this.x + this.size * Math.cos(this.angle - 150 / 180 * Math.PI), 
-      this.y - this.size * Math.sin(this.angle - 150 / 180 * Math.PI)
+      this.x + this.size * Math.cos(this.angle - 145 / 180 * Math.PI), 
+      this.y - this.size * Math.sin(this.angle - 145 / 180 * Math.PI)
     ]) // right corner
 
     return result
