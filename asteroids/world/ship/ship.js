@@ -9,7 +9,7 @@ export default function createShip(posX, posY){
     const result = {
       lineWidth: SHIP_LENGTH / 10,
       points: [],
-      color: this.collisions.length > 0 ? 'red' : 'white'
+      color: this.isAlive ? (this.collisions.length > 0 ? 'red' : 'white') : 'grey'
     };
 
     result.points.push([
@@ -59,12 +59,26 @@ export default function createShip(posX, posY){
     this.collisions = [];
   }
 
+  function checkIfAlive(ship){
+    if(ship.collisions.some(objct => objct.category === 'asteroid')){
+      ship.isAlive = false
+      ship.rotate(0)
+      ship.toggleThrust(0)
+      console.log('YOU DIED')
+    }
+  }
+
   function update(){
+    // rotation
     this.angle += this.rotation
+    // thrust
     if(this.thrusting) thrust(this)
     else slowDown(this);
+    // movement
     this.x += this.acceleration.x
     this.y -= this.acceleration.y
+    // ship "explosion"
+    if(this.isAlive) checkIfAlive(this);
   }
 
   return {
@@ -77,6 +91,7 @@ export default function createShip(posX, posY){
     angle: 90 / 180 * Math.PI,
     rotation: 0,
     collisions: [],
+    isAlive: true,
     // methods
     getShape,
     rotate,
