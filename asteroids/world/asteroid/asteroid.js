@@ -1,6 +1,6 @@
 export default function createAsteroid(posX, posY){
   const ASTEROID_SPEED = 20; // px per sec
-  const ASTEROID_SIZE = 50; // asteriod diameter in px
+  const ASTEROID_SIZE = 40; // asteriod diameter in px
   const ASTEROID_VERTS = 10; // avarage verts ammount
   const ASTEROID_JAG = 0.3; // jaggednest
   const ASTEROID_ROT = 15 / 180 * Math.PI; // avarage rotation speed in rad
@@ -13,7 +13,7 @@ export default function createAsteroid(posX, posY){
 
   function getShape(){
     const result = {
-      lineWidth: ASTEROID_SIZE / 20,
+      lineWidth: ASTEROID_SIZE / 15,
       points: [],
       color: this.collisions.length > 0 ? 'red' : 'slategrey'
     };
