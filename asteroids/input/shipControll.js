@@ -3,4 +3,5 @@ export const shipControll = {
   'ArrowUp': 'thrust',
   'ArrowRight': 'rotateRight',
   ' ': 'shoot',
+  'Enter': 'reset',
 }

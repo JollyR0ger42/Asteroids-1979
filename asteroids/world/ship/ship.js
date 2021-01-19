@@ -10,7 +10,7 @@ export default function createShip(posX, posY){
     const result = {
       lineWidth: SHIP_LENGTH / 10,
       points: [],
-      color: this.isAlive ? (this.collisions.length > 0 ? 'red' : 'white') : 'grey'
+      color: this.isAlive ? 'white' : 'grey'
     };
 
     result.points.push([
@@ -67,7 +67,6 @@ export default function createShip(posX, posY){
       ship.isShooting = false
       ship.rotate(0)
       ship.toggleThrust(0)
-      console.log('YOU DIED')
       ship.emmit?.('gameover')
     }
   }
@@ -91,6 +90,10 @@ export default function createShip(posX, posY){
     this.angle = 90 / 180 * Math.PI
     this.acceleration = {x:0, y:0}
     this.isAlive = true
+  }
+
+  function resetGame(){
+    this.emmit?.('resetGame')
   }
 
   function update(FPS = 30){
@@ -129,5 +132,6 @@ export default function createShip(posX, posY){
     resetCollision,
     allowShooting,
     reset,
+    resetGame,
   }
 }

@@ -26,5 +26,8 @@ function listener(eventName, payload){
     case 'newLevel':
       gameRender.drawSplashScreen()
       break;
+    case 'gameover':
+      gameRender.drawDeathScreen()
+      break;
   }
 }

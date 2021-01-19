@@ -14,7 +14,7 @@ export default function createAsteroid(posX, posY, size){
     const result = {
       lineWidth: size / 15,
       points: [],
-      color: this.collisions.length > 0 ? 'red' : 'slategrey'
+      color: 'slategrey'
     };
 
     for(let i = 0; i < this.verts; i++){

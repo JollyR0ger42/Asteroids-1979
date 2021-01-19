@@ -4,8 +4,20 @@ export default function createUiRender(canvas, world, FPS){
 
   const render = {
     splashAlpha: 1,
+    showDeathScreen: false,
     // methods
-    update
+    update,
+    drawDeathScreen,
+  }
+
+  function drawDeathScreen(){
+    ctx.textAlign = 'center'
+    ctx.textBaseLine = 'middle'
+    ctx.fillStyle = 'red'
+    ctx.font = '50px sans'
+    ctx.fillText(`YOU DIED`, canvas.width / 2, canvas.height / 2)
+    ctx.font = '20px sans'
+    ctx.fillText(`Press Enter to try again`, canvas.width / 2, canvas.height / 2 + 40)
   }
 
   function drawSplashScreen(){
@@ -27,6 +39,7 @@ export default function createUiRender(canvas, world, FPS){
 
   function update(){
     if(render.splashAlpha >= 0) drawSplashScreen();
+    if(render.showDeathScreen) drawDeathScreen();
     drawScore()
   }
   

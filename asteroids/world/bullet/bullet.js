@@ -5,7 +5,7 @@ export default function createBullet(payload, FPS = 30){
     const result = {
       lineWidth: 2,
       points: [],
-      color: this.lifeSpan > 0 ? 'white' : 'red'
+      color: 'white',
     };
     result.points.push([this.x-this.size, this.y-this.size])
     result.points.push([this.x+this.size, this.y-this.size])

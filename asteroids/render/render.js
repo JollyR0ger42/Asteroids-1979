@@ -12,7 +12,12 @@ export default function createRender(canvas, WORLD, FPS){
 
   function drawSplashScreen(){
     UiRender.splashAlpha = 1
+    UiRender.showDeathScreen = false
   }
 
-  return {update, drawSplashScreen}
+  function drawDeathScreen(){
+    UiRender.showDeathScreen = true
+  }
+
+  return {update, drawSplashScreen, drawDeathScreen}
 }

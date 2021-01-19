@@ -25,8 +25,14 @@ export default function createShipController(ship, FPS){
           ship.allowShooting(0)
           break;
       }
+    } else {
+      switch(command){
+        case 'reset_on':
+          ship.resetGame()
+          break;
     }
   }
+}
 
   return {
     name: 'ship',
