@@ -17,8 +17,17 @@ export default function createUiRender(canvas, world, FPS){
     render.splashAlpha -= 1 / FADING_TIME / FPS
   }
 
+  function drawScore(){
+    ctx.textAlign = 'left'
+    ctx.fillStyle = 'white'
+    ctx.font = '25px sans'
+    ctx.fillText(`Score: ${world.score}`, 15, 35)
+    render.splashAlpha -= 1 / FADING_TIME / FPS
+  }
+
   function update(){
     if(render.splashAlpha >= 0) drawSplashScreen();
+    drawScore()
   }
   
   return render
