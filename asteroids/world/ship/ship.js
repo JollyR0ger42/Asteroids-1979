@@ -68,6 +68,7 @@ export default function createShip(posX, posY){
       ship.rotate(0)
       ship.toggleThrust(0)
       console.log('YOU DIED')
+      ship.emmit('gameover')
     }
   }
 

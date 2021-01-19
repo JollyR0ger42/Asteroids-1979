@@ -47,15 +47,17 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
   }
 
   function emmit(eventName, payload){
-    if(eventName === 'shoot'){
-      let newBullet = createBullet(payload, FPS);
-      world.objects.push(newBullet)
-      world.init(newBullet)
-    }
-    if(eventName === 'destroy'){
-      let index = world.objects.indexOf(payload);
-      world.objects.splice(index, 1)
-      if(payload.category === 'asteroid') destroyAsteroid(payload);
+    switch(eventName){
+      case 'shoot':
+        let newBullet = createBullet(payload, FPS);
+        world.objects.push(newBullet)
+        world.init(newBullet)
+        break;
+      case 'destroy':
+        let index = world.objects.indexOf(payload);
+        world.objects.splice(index, 1)
+        if(payload.category === 'asteroid') destroyAsteroid(payload);
+        break;
     }
   }
 
