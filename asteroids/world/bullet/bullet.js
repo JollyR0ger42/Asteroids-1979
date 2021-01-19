@@ -24,8 +24,8 @@ export default function createBullet(payload, FPS = 30){
 
   function checkIfAlive(self){
     const colidedAsteroid = self.collisions.find(objct => objct.category === 'asteroid')
-    if(self.emmit && (self.lifeSpan <= 0 || colidedAsteroid)){
-      self.emmit('destroyAsteroid', {bullet: self, asteroid: colidedAsteroid})
+    if(self.lifeSpan <= 0 || colidedAsteroid){
+      self.emmit?.('destroyAsteroid', {bullet: self, asteroid: colidedAsteroid})
     }
   }
 

@@ -68,7 +68,7 @@ export default function createShip(posX, posY){
       ship.rotate(0)
       ship.toggleThrust(0)
       console.log('YOU DIED')
-      ship.emmit('gameover')
+      ship.emmit?.('gameover')
     }
   }
 
@@ -77,14 +77,12 @@ export default function createShip(posX, posY){
   }
 
   function shoot(ship){
-    if(ship.emmit){
-      ship.reloading = RELOAD_TIME
-      ship.emmit('shoot', {
-        x: ship.getShape().points[0][0],
-        y: ship.getShape().points[0][1],
-        angle: ship.angle,
-      })
-    }
+    ship.reloading = RELOAD_TIME
+    ship.emmit?.('shoot', {
+      x: ship.getShape().points[0][0],
+      y: ship.getShape().points[0][1],
+      angle: ship.angle,
+    })
   }
 
   function reset(posX, posY){

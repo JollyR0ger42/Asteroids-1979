@@ -85,6 +85,7 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
   }
 
   function setLevel(level){
+    this.emmit?.('newLevel')
     if(level) world.level = level;
     
     const ship = this.objects[0];
