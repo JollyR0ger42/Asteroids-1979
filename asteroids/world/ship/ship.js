@@ -1,6 +1,6 @@
 export default function createShip(posX, posY){
   const SHIP_LENGTH = 15;
-  const TURN_SPEED = 360; // degrees per sec
+  const TURN_SPEED = 180; // degrees per sec
   const SHIP_THRUST = 5; // acceleration in px per sec
   const FRICTION = 0.33; // ship slowdown
   const RELOAD_TIME = 0.5; // seconds to reload
