@@ -5,7 +5,7 @@ import createCollision from './collision/collision.js';
 import createBullet from './bullet/bullet.js';
 import createAsteroid from './asteroid/asteroid.js';
 
-export default function createWorld(width = 100, height = 100, FPS = 30){
+export default function createWorld(width = 100, height = 100, level = 1, FPS = 30){
   const ASTEROID_SIZE = 40; // asteriod diameter in px
 
   const world = {
@@ -37,6 +37,7 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
 
   function destroyAsteroid(asteroid){
     if(asteroid.size === ASTEROID_SIZE){
+      world.score += 10
       for(let i = 0; i < 2; i++){
         let newAsteroid = createAsteroid(asteroid.x, asteroid.y, ASTEROID_SIZE / 2)
         newAsteroid.randomLaunch(FPS / 4) // dividing give to small asteroids more speed
@@ -44,8 +45,9 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
         world.init(newAsteroid)
       }
     } else {
-      console.log('Ten points to Grifindor')
+      world.score += 5
     }
+    console.log('Score:', world.score)
   }
 
   function emmit(eventName, payload){
@@ -74,9 +76,10 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
   function newLevel(){
     const ship = this.objects[0];
     ship.reset(width / 2, height / 2)
-    const asteroidsBelt = createAsteroidsBelt(20, ASTEROID_SIZE, width, height, FPS)
+    const asteroidsBelt = createAsteroidsBelt(5, ASTEROID_SIZE, width, height, FPS)
     this.objects.splice(0, this.objects.length)
     this.objects.push(ship, ...asteroidsBelt)
+    world.init()
     createCollision(this.objects)
   }
   
@@ -86,7 +89,6 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
   world.objects.push(ship)
   world.controllers.push(shipController)
   
-  world.init()
   world.newLevel()
   return world
 }

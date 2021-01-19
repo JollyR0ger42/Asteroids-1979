@@ -1,5 +1,5 @@
 export default function createAsteroid(posX, posY, size){
-  const ASTEROID_SPEED = 40; // px per sec
+  const ASTEROID_SPEED = 25; // px per sec
   const ASTEROID_VERTS = 10; // avarage verts ammount
   const ASTEROID_JAG = 0.3; // jaggednest
   const ASTEROID_ROT = 15 / 180 * Math.PI; // avarage rotation speed in rad
