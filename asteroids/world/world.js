@@ -33,6 +33,19 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
     })
   }
 
+  function destroyAsteroid(asteroid){
+    if(asteroid.size === ASTEROID_SIZE){
+      for(let i = 0; i < 2; i++){
+        let newAsteroid = createAsteroid(asteroid.x, asteroid.y, ASTEROID_SIZE / 2)
+        newAsteroid.randomLaunch(FPS / 4) // dividing give to small asteroids more speed
+        world.objects.push(newAsteroid)
+        world.init(newAsteroid)
+      }
+    } else {
+      console.log('Ten points to Grifindor')
+    }
+  }
+
   function emmit(eventName, payload){
     if(eventName === 'shoot'){
       let newBullet = createBullet(payload, FPS);
@@ -42,14 +55,7 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
     if(eventName === 'destroy'){
       let index = world.objects.indexOf(payload);
       world.objects.splice(index, 1)
-      if(payload.category === 'asteroid' && payload.size === ASTEROID_SIZE){
-        for(let i = 0; i < 2; i++){
-          let newAsteroid = createAsteroid(payload.x, payload.y, ASTEROID_SIZE / 2)
-          newAsteroid.randomLaunch(FPS / 4) // dividing give to small asteroids more speed
-          world.objects.push(newAsteroid)
-          world.init(newAsteroid)
-        }
-      }
+      if(payload.category === 'asteroid') destroyAsteroid(payload);
     }
   }
 
