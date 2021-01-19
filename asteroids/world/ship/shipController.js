@@ -11,12 +11,18 @@ export default function createShipController(ship, FPS){
         case 'rotateRight_on':
           ship.rotate(-1 / FPS)
           break;
+        case 'shoot_on':
+          ship.allowShooting(1)
+          break;
         case 'rotateRight_off':
         case 'rotateLeft_off':
           ship.rotate(0)
           break;
         case 'thrust_off':
           ship.toggleThrust(0)
+          break;
+        case 'shoot_off':
+          ship.allowShooting(0)
           break;
       }
     }

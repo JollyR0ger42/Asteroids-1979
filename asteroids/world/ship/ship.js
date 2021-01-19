@@ -3,6 +3,7 @@ export default function createShip(posX, posY){
   const TURN_SPEED = 360; // degrees per sec
   const SHIP_THRUST = 5; // acceleration in px per sec
   const FRICTION = 0.33; // ship slowdown
+  const RELOAD_TIME = 0.5; // seconds to reload
   let lastThrusting = 0; // will save here last non-zero thrust, would be handy to slowdown
 
   function getShape(){
@@ -53,6 +54,7 @@ export default function createShip(posX, posY){
 
   function collideWith(object){
     this.collisions.push(object)
+    checkIfAlive(this)
   }
 
   function resetCollision(){
@@ -62,23 +64,40 @@ export default function createShip(posX, posY){
   function checkIfAlive(ship){
     if(ship.collisions.some(objct => objct.category === 'asteroid')){
       ship.isAlive = false
+      ship.isShooting = false
       ship.rotate(0)
       ship.toggleThrust(0)
       console.log('YOU DIED')
     }
   }
 
-  function update(){
+  function allowShooting(input){
+    this.isShooting = input
+  }
+
+  function shoot(ship){
+    if(ship.emmit){
+      ship.reloading = RELOAD_TIME
+      ship.emmit('shoot', {
+        x: ship.getShape().points[0][0],
+        y: ship.getShape().points[0][1],
+        angle: ship.angle,
+      })
+    }
+  }
+
+  function update(FPS = 30){
     // rotation
     this.angle += this.rotation
     // thrust
     if(this.thrusting) thrust(this)
-    else slowDown(this);
+      else slowDown(this);
     // movement
     this.x += this.acceleration.x
     this.y -= this.acceleration.y
-    // ship "explosion"
-    if(this.isAlive) checkIfAlive(this);
+    // shooting
+    if(this.reloading >= 0) this.reloading -= 1 / FPS;
+    if(this.isShooting && this.reloading <= 0) shoot(this);
   }
 
   return {
@@ -92,6 +111,8 @@ export default function createShip(posX, posY){
     rotation: 0,
     collisions: [],
     isAlive: true,
+    isShooting: false,
+    reloading: 0, // seconds left to reload after shot
     // methods
     getShape,
     rotate,
@@ -99,5 +120,6 @@ export default function createShip(posX, posY){
     update,
     collideWith,
     resetCollision,
+    allowShooting,
   }
 }
