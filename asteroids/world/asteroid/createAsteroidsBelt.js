@@ -1,6 +1,6 @@
 import createAsteroid from './asteroid.js';
 
-export default function createAsteroidsBelt(ammount, worldWidth, worldHeight, FPS = 30){
+export default function createAsteroidsBelt(ammount, size, worldWidth, worldHeight, FPS = 30){
   const SAFE_ZONE_RADIUS = 200; // dist from center without asteroids
 
   const result = [];
@@ -11,7 +11,7 @@ export default function createAsteroidsBelt(ammount, worldWidth, worldHeight, FP
       posY = Math.floor(Math.random() * worldHeight);
     } while(distanceBetweenPoints(worldWidth / 2, worldHeight / 2, posX, posY) < SAFE_ZONE_RADIUS)
 
-    const newAsteroid = createAsteroid(posX, posY);
+    const newAsteroid = createAsteroid(posX, posY, size);
     newAsteroid.randomLaunch(FPS)
     result.push(newAsteroid)
   }

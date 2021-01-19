@@ -1,6 +1,6 @@
 const SECOND = 1000; // in ms
 
-export default function createCollision(objects, perSecond = 10){
+export default function createCollision(objects, perSecond = 30){
   const NORMALIZER = 0.8; // coef to triger collision later then it should be for NORMALIZER < 1
   setInterval(() => {
     for(let objct of objects){

@@ -14,16 +14,16 @@ export default function createBullet(payload, FPS = 30){
     return result
   }
 
-  function resetCollision(){
-
+  function collideWith(object){
+    this.collisions.push(object)
   }
 
-  function collideWith(){
-
+  function resetCollision(){
+    this.collisions = [];
   }
 
   function checkIfAlive(self){
-    if(self.lifeSpan <= 0){
+    if(self.emmit && (self.lifeSpan <= 0 || self.collisions.some(objct => objct.category === 'asteroid'))){
       self.emmit('destroy', self)
     }
   }
@@ -35,8 +35,8 @@ export default function createBullet(payload, FPS = 30){
     checkIfAlive(this)
   }
 
-  console.log(payload)
   return {
+    category: 'bullet',
     x: payload.x,
     y: payload.y,
     size: 1,
@@ -46,6 +46,7 @@ export default function createBullet(payload, FPS = 30){
       y: BULLET_SPEED * Math.sin(payload.angle) / FPS,
     },
     lifeSpan: 2, // in seconds
+    collisions: [],
     // methods
     update,
     getShape,

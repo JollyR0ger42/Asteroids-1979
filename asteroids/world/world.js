@@ -3,8 +3,11 @@ import createShipController from './ship/shipController.js';
 import createAsteroidsBelt from './asteroid/createAsteroidsBelt.js';
 import createCollision from './collision/collision.js';
 import createBullet from './bullet/bullet.js';
+import createAsteroid from './asteroid/asteroid.js';
 
 export default function createWorld(width = 100, height = 100, FPS = 30){
+  const ASTEROID_SIZE = 40; // asteriod diameter in px
+
   const world = {
     objects: [],
     controllers: [],
@@ -39,7 +42,14 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
     if(eventName === 'destroy'){
       let index = world.objects.indexOf(payload);
       world.objects.splice(index, 1)
-      // world.objects = world.objects.filter(objct => objct !== payload)
+      if(payload.category === 'asteroid' && payload.size === ASTEROID_SIZE){
+        for(let i = 0; i < 2; i++){
+          let newAsteroid = createAsteroid(payload.x, payload.y, ASTEROID_SIZE / 2)
+          newAsteroid.randomLaunch(FPS / 4) // dividing give to small asteroids more speed
+          world.objects.push(newAsteroid)
+          world.init(newAsteroid)
+        }
+      }
     }
   }
 
@@ -50,7 +60,7 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
   
   const ship = createShip(width / 2, height / 2, 20);
   const shipController = createShipController(ship, FPS);
-  const asteroidsBelt = createAsteroidsBelt(5, width, height)
+  const asteroidsBelt = createAsteroidsBelt(20, ASTEROID_SIZE, width, height, FPS)
 
   world.objects.push(ship)
   world.controllers.push(shipController)
