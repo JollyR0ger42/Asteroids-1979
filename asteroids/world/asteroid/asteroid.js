@@ -28,17 +28,10 @@ export default function createAsteroid(posX, posY, size){
 
   function collideWith(object){
     this.collisions.push(object)
-    checkIfAlive(this)
   }
 
   function resetCollision(){
     this.collisions = [];
-  }
-
-  function checkIfAlive(self){
-    if(self.emmit && self.collisions.some(objct => objct.category === 'bullet')){
-      self.emmit('destroy', self)
-    }
   }
 
   function update(){

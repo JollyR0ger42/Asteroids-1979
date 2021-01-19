@@ -16,7 +16,7 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
     // methods
     update,
     init,
-    emmit,
+    listener,
     setLevel,
   };
 
@@ -42,8 +42,14 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
     })
   }
 
-  function destroyAsteroid(asteroid){
-    if(asteroid.size === ASTEROID_SIZE){
+  function destroyAsteroid({bullet, asteroid}){
+    let index = world.objects.indexOf(bullet);
+    world.objects.splice(index, 1)
+    index = world.objects.indexOf(asteroid)
+    if(index > -1)
+      world.objects.splice(index, 1);
+    // splitting in two if necessary
+    if(asteroid?.size === ASTEROID_SIZE){
       world.score += 10
       for(let i = 0; i < 2; i++){
         let newAsteroid = createAsteroid(asteroid.x, asteroid.y, ASTEROID_SIZE / 2)
@@ -51,23 +57,21 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
         world.objects.push(newAsteroid)
         world.init(newAsteroid)
       }
-    } else {
+    } else if (asteroid) {
       world.score += 5
     }
     console.log('Score:', world.score)
   }
 
-  function emmit(eventName, payload){
+  function listener(eventName, payload){
     switch(eventName){
       case 'shoot':
         let newBullet = createBullet(payload, FPS);
         world.objects.push(newBullet)
         world.init(newBullet)
         break;
-      case 'destroy':
-        let index = world.objects.indexOf(payload);
-        world.objects.splice(index, 1)
-        if(payload.category === 'asteroid') destroyAsteroid(payload);
+      case 'destroyAsteroid':
+        destroyAsteroid(payload);
         break;
       case 'gameover':
         world.setLevel(1)
@@ -77,7 +81,7 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
 
   function init(target){
     const targets = target ? [target] : this.objects;
-    targets.forEach(obj => obj.emmit = this.emmit)
+    targets.forEach(obj => obj.emmit = this.listener)
   }
 
   function setLevel(level){
@@ -86,7 +90,7 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
     const ship = this.objects[0];
     ship.reset(width / 2, height / 2)
 
-    const asteroidsAmmount = 3 + world.level * 2
+    const asteroidsAmmount = 1 + world.level * 2
     const asteroidsBelt = createAsteroidsBelt(asteroidsAmmount, ASTEROID_SIZE, width, height, FPS / world.level) // asteroids speed changes depends on FPS param, kinda stupid, but kinda smart -_-
     
     this.objects.splice(0, this.objects.length)
