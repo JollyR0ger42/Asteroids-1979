@@ -1,25 +1,18 @@
-export default function createRender(canvas, WORLD){
-  function update(){
-    const ctx = this.canvas.getContext('2d')
-    
-    // draw space
-    ctx.fillStyle = 'black'
-    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+import createWorldRender from './asteroidsWorld.js';
+import createUiRender from './asteroidsUI.js';
 
-    // draw WORLD
-    WORLD.forEach(el => {
-      const shape = el.getShape();
-      ctx.strokeStyle = shape.color || 'white'
-      ctx.lineWidth = shape.lineWidth
-      ctx.beginPath()
-      ctx.moveTo(...shape.points[0])
-      for(let point of shape.points.slice(1)){
-        ctx.lineTo(...point)
-      }
-      ctx.closePath()
-      ctx.stroke()
-    })
+export default function createRender(canvas, WORLD, FPS){
+  const worldRender = createWorldRender(canvas, WORLD);
+  const UiRender = createUiRender(canvas, WORLD, FPS);
+
+  function update(){
+    worldRender.update()
+    UiRender.update()
   }
 
-  return {canvas, WORLD, update}
+  function drawSplashScreen(){
+    UiRender.splashAlpha = 1
+  }
+
+  return {update, drawSplashScreen}
 }

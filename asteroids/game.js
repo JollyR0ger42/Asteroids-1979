@@ -11,8 +11,20 @@ import createInput from './input/input.js'
 
 // init
 const gameWorld = createWorld(canvas.width, canvas.height, FPS);
-const gameRender = createRender(canvas, gameWorld.objects);
+const gameRender = createRender(canvas, gameWorld, FPS);
 const inputPublisher = createInput();
 inputPublisher.subscribe(gameWorld.controllers[0])
 
 initLoop(gameWorld, gameRender, FPS)
+
+// Events
+gameWorld.emmit = listener
+
+// 
+function listener(eventName, payload){
+  switch(eventName){
+    case 'newLevel':
+      gameRender.drawSplashScreen()
+      break;
+  }
+}
