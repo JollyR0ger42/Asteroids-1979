@@ -3,7 +3,7 @@ export default function createShip(posX, posY){
   const TURN_SPEED = 180; // degrees per sec
   const SHIP_THRUST = 5; // acceleration in px per sec
   const FRICTION = 0.33; // ship slowdown
-  const RELOAD_TIME = 0.5; // seconds to reload
+  const RELOAD_TIME = 0.33; // seconds to reload
   let lastThrusting = 0; // will save here last non-zero thrust, would be handy to slowdown
 
   function getShape(){

@@ -82,12 +82,16 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
 
   function setLevel(level){
     if(level) world.level = level;
+    
     const ship = this.objects[0];
     ship.reset(width / 2, height / 2)
+
     const asteroidsAmmount = 3 + world.level * 2
     const asteroidsBelt = createAsteroidsBelt(asteroidsAmmount, ASTEROID_SIZE, width, height, FPS / world.level) // asteroids speed changes depends on FPS param, kinda stupid, but kinda smart -_-
+    
     this.objects.splice(0, this.objects.length)
     this.objects.push(ship, ...asteroidsBelt)
+
     world.init()
     createCollision(this.objects)
   }
