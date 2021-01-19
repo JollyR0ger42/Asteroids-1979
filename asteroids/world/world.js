@@ -11,9 +11,11 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
   const world = {
     objects: [],
     controllers: [],
+    score: 0,
     update,
     init,
     emmit,
+    newLevel,
   };
 
   function update(){
@@ -58,6 +60,9 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
         world.objects.splice(index, 1)
         if(payload.category === 'asteroid') destroyAsteroid(payload);
         break;
+      case 'gameover':
+        world.newLevel()
+        break;
     }
   }
 
@@ -65,16 +70,23 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
     const targets = target ? [target] : this.objects;
     targets.forEach(obj => obj.emmit = this.emmit)
   }
+
+  function newLevel(){
+    const ship = this.objects[0];
+    ship.reset(width / 2, height / 2)
+    const asteroidsBelt = createAsteroidsBelt(20, ASTEROID_SIZE, width, height, FPS)
+    this.objects.splice(0, this.objects.length)
+    this.objects.push(ship, ...asteroidsBelt)
+    createCollision(this.objects)
+  }
   
   const ship = createShip(width / 2, height / 2, 20);
   const shipController = createShipController(ship, FPS);
-  const asteroidsBelt = createAsteroidsBelt(20, ASTEROID_SIZE, width, height, FPS)
 
   world.objects.push(ship)
   world.controllers.push(shipController)
-  world.objects.push(...asteroidsBelt)
   
   world.init()
-  createCollision(world.objects)
+  world.newLevel()
   return world
 }

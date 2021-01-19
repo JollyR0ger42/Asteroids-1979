@@ -87,6 +87,14 @@ export default function createShip(posX, posY){
     }
   }
 
+  function reset(posX, posY){
+    this.x = posX
+    this.y = posY
+    this.angle = 90 / 180 * Math.PI
+    this.acceleration = {x:0, y:0}
+    this.isAlive = true
+  }
+
   function update(FPS = 30){
     // rotation
     this.angle += this.rotation
@@ -122,5 +130,6 @@ export default function createShip(posX, posY){
     collideWith,
     resetCollision,
     allowShooting,
+    reset,
   }
 }
