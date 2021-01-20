@@ -5,6 +5,7 @@ export default function createAsteroid(posX, posY, size){
   const ASTEROID_ROT = 15 / 180 * Math.PI; // avarage rotation speed in rad
   
   function randomLaunch(FPS = 30){
+    this.speedCoef = FPS
     this.velocity.x = (Math.random() + 0.1) * ASTEROID_SPEED * (Math.random() < 0.5 ? 1 : -1) / FPS
     this.velocity.y = (Math.random() + 0.1) * ASTEROID_SPEED * (Math.random() < 0.5 ? 1 : -1) / FPS
     this.rotation = Math.random() * ASTEROID_ROT / FPS
@@ -58,6 +59,7 @@ export default function createAsteroid(posX, posY, size){
     offsets: offsets,
     rotation: 0,
     collisions: [],
+    speedCoef: null,
     // methods
     randomLaunch,
     getShape,

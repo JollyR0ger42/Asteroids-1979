@@ -7,6 +7,7 @@ import createAsteroid from './asteroid/asteroid.js';
 
 export default function createWorld(width = 100, height = 100, FPS = 30){
   const ASTEROID_SIZE = 40; // asteriod diameter in px
+  const ASTEROID_SIZE_OPT_COUNT = 3; // how much diff size asteroids could have, 3 - means that asteroid break 2 times
 
   const world = {
     objects: [],
@@ -42,21 +43,26 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
     })
   }
 
+  const asteroidSizeStep = Math.floor(ASTEROID_SIZE / ASTEROID_SIZE_OPT_COUNT);
+  const asteroidMinSize = ASTEROID_SIZE - (ASTEROID_SIZE_OPT_COUNT - 1) * asteroidSizeStep;
+  function breakAsteroid(asteroid, piecesCount = 2){
+    for(let i = 0; i < piecesCount; i++){
+      let newAsteroid = createAsteroid(asteroid.x, asteroid.y, asteroid.size - asteroidSizeStep);
+      newAsteroid.randomLaunch(asteroid.speedCoef / 2) // dividing give to small asteroids more speed
+      world.objects.push(newAsteroid)
+      world.init(newAsteroid)
+    }
+  }
+
   function destroyAsteroid({bullet, asteroid}){
     let index = world.objects.indexOf(bullet);
     world.objects.splice(index, 1)
     index = world.objects.indexOf(asteroid)
-    if(index > -1)
-      world.objects.splice(index, 1);
+    world.objects.splice(index, 1);
     // splitting in two if necessary
-    if(asteroid?.size === ASTEROID_SIZE){
+    if(asteroid?.size > asteroidMinSize){
       world.score += 10
-      for(let i = 0; i < 2; i++){
-        let newAsteroid = createAsteroid(asteroid.x, asteroid.y, ASTEROID_SIZE / 2)
-        newAsteroid.randomLaunch(FPS / 3) // dividing give to small asteroids more speed
-        world.objects.push(newAsteroid)
-        world.init(newAsteroid)
-      }
+      breakAsteroid(asteroid)
     } else if (asteroid) {
       world.score += 5
     }
@@ -72,6 +78,10 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
         break;
       case 'destroyAsteroid':
         destroyAsteroid(payload);
+        break;
+      case 'destroyBullet':
+        let index = world.objects.indexOf(payload);
+        world.objects.splice(index, 1)
         break;
       case 'gameover':
         world.emmit?.('gameover')
