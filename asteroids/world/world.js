@@ -30,15 +30,17 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
     this.objects.forEach(object => {
       object.update(FPS)
       // loop space
-      if(object.x < 0 - object.size){
-        object.x = width + object.size
-      } else if(object.x > width + object.size){
-        object.x = 0 - object.size
-      }
-      if(object.y < 0 - object.size){
-        object.y = height + object.size
-      } else if(object.y > height + object.size){
-        object.y = 0 - object.size
+      if(object.category === 'ship' || object.category === 'asteroid'){
+        if(object.x < 0 - object.size){
+          object.x = width + object.size
+        } else if(object.x > width + object.size){
+          object.x = 0 - object.size
+        }
+        if(object.y < 0 - object.size){
+          object.y = height + object.size
+        } else if(object.y > height + object.size){
+          object.y = 0 - object.size
+        }
       }
     })
   }
