@@ -3,6 +3,7 @@ export default function createAsteroid(posX, posY, size){
   const ASTEROID_VERTS = 10; // avarage verts ammount
   const ASTEROID_JAG = 0.3; // jaggednest
   const ASTEROID_ROT = 15 / 180 * Math.PI; // avarage rotation speed in rad
+  
   const self = {
     category: 'asteroid',
     x: posX,
@@ -16,6 +17,7 @@ export default function createAsteroid(posX, posY, size){
     collisions: [],
     speedCoef: null,
   };
+
   const asteroidMethods = self => ({
     randomLaunch: (FPS = 30) => {
       self.speedCoef = FPS

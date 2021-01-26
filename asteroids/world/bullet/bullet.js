@@ -1,59 +1,51 @@
 export default function createBullet(payload, FPS = 30){
   const BULLET_SPEED = 500; // px per sec
+  const BULLET_LIFESPAN = 2; // in seconds
+  const BULLET_SIZE = 1; // in px
 
-  function getShape(){
-    const result = {
-      lineWidth: 2,
-      points: [],
-      color: 'white',
-    };
-    result.points.push([this.x-this.size, this.y-this.size])
-    result.points.push([this.x+this.size, this.y-this.size])
-    result.points.push([this.x+this.size, this.y+this.size])
-    result.points.push([this.x-this.size, this.y+this.size])
-    return result
-  }
-
-  function collideWith(object){
-    this.collisions.push(object)
-  }
-
-  function resetCollision(){
-    this.collisions = [];
-  }
-
-  function checkIfAlive(self){
-    const colidedAsteroid = self.collisions.find(objct => objct.category === 'asteroid')
-    if(colidedAsteroid){
-      self.emmit?.('destroyAsteroid', {bullet: self, asteroid: colidedAsteroid})
-    } else if (self.lifeSpan <= 0) {
-      self.emmit?.('destroyBullet', self)
-    }
-  }
-
-  function update(){
-    this.x += this.velocity.x
-    this.y -= this.velocity.y
-    this.lifeSpan -= 1 / FPS
-    checkIfAlive(this)
-  }
-
-  return {
+  const self = {
     category: 'bullet',
     x: payload.x,
     y: payload.y,
-    size: 1,
+    size: BULLET_SIZE,
     angle: payload.angle,
     velocity: {
       x: BULLET_SPEED * Math.cos(payload.angle) / FPS,
       y: BULLET_SPEED * Math.sin(payload.angle) / FPS,
     },
-    lifeSpan: 2, // in seconds
+    lifeSpan: BULLET_LIFESPAN, // in seconds
     collisions: [],
-    // methods
-    update,
-    getShape,
-    resetCollision,
-    collideWith,
+  };
+
+  const bulletMethods = self => ({
+    getShape: () => {
+      const shape = {
+        lineWidth: 2,
+        points: [],
+        color: 'white',
+      };
+      shape.points.push([self.x-self.size, self.y-self.size])
+      shape.points.push([self.x+self.size, self.y-self.size])
+      shape.points.push([self.x+self.size, self.y+self.size])
+      shape.points.push([self.x-self.size, self.y+self.size])
+      return shape
+    },
+    update: () => {
+      self.x += self.velocity.x
+      self.y -= self.velocity.y
+      self.lifeSpan -= 1 / FPS
+      checkIfAlive(self)
+    }
+  });
+
+  return Object.assign(self, bulletMethods(self))
+}
+
+function checkIfAlive(self){
+  const colidedAsteroid = self.collisions.find(objct => objct.category === 'asteroid')
+  if(colidedAsteroid){
+    self.emmit?.('destroyAsteroid', {bullet: self, asteroid: colidedAsteroid})
+  } else if (self.lifeSpan <= 0) {
+    self.emmit?.('destroyBullet', self)
   }
 }
