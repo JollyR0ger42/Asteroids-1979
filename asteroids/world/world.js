@@ -4,6 +4,7 @@ import createAsteroidsBelt from './asteroid/createAsteroidsBelt.js';
 import createCollision from './collision/collision.js';
 import createBullet from './bullet/bullet.js';
 import createAsteroid from './asteroid/asteroid.js';
+import createWorldObj from './createWorldObj.js';
 
 export default function createWorld(width = 100, height = 100, FPS = 30){
   const ASTEROID_SIZE = 40; // asteriod diameter in px
@@ -97,7 +98,10 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
 
   function init(target){
     const targets = target ? [target] : this.objects;
-    targets.forEach(obj => obj.emmit = this.listener)
+    targets.forEach(obj => {
+      createWorldObj(obj)
+      obj.emmit = this.listener
+    })
   }
 
   function setLevel(level){
