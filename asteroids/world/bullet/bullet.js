@@ -39,14 +39,15 @@ export default function createBullet(payload, FPS = 30){
   });
 
   return Object.assign(self, bulletMethods(self))
-}
 
-// "private" methods
-function checkIfAlive(self){
-  const colidedAsteroid = self.collisions.find(objct => objct.category === 'asteroid')
-  if(colidedAsteroid){
-    self.emmit?.('destroyAsteroid', {bullet: self, asteroid: colidedAsteroid})
-  } else if (self.lifeSpan <= 0) {
-    self.emmit?.('destroyBullet', self)
+
+  // "private" methods
+  function checkIfAlive(self){
+    const colidedAsteroid = self.collisions.find(objct => objct.category === 'asteroid')
+    if(colidedAsteroid){
+      self.emmit?.('destroyAsteroid', {bullet: self, asteroid: colidedAsteroid})
+    } else if (self.lifeSpan <= 0) {
+      self.emmit?.('destroyBullet', self)
+    }
   }
 }

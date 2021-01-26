@@ -6,111 +6,7 @@ export default function createShip(posX, posY){
   const RELOAD_TIME = 0.33; // seconds to reload
   let lastThrusting = 0; // will save here last non-zero thrust, would be handy to slowdown
 
-  function getShape(){
-    const result = {
-      lineWidth: SHIP_LENGTH / 10,
-      points: [],
-      color: this.isAlive ? 'white' : 'grey'
-    };
-
-    result.points.push([
-      this.x + this.size * Math.cos(this.angle), 
-      this.y - this.size * Math.sin(this.angle)
-    ]) // nose
-    result.points.push([
-      this.x + this.size * Math.cos(this.angle + 145 / 180 * Math.PI), 
-      this.y - this.size * Math.sin(this.angle + 145 / 180 * Math.PI)
-    ]) // left corner
-    result.points.push([
-      this.x + this.size * Math.cos(this.angle +  Math.PI) * 0.75, // 0.75 - for curvy back
-      this.y - this.size * Math.sin(this.angle +  Math.PI) * 0.75
-    ]) // back
-    result.points.push([
-      this.x + this.size * Math.cos(this.angle - 145 / 180 * Math.PI), 
-      this.y - this.size * Math.sin(this.angle - 145 / 180 * Math.PI)
-    ]) // right corner
-
-    return result
-  }
-
-  function rotate(coef){ // positive coef - rotate left, negative - right
-    this.rotation = (TURN_SPEED / 180 * Math.PI) * coef;
-  }
-
-  function toggleThrust(coef){ 
-    this.thrusting = coef
-    lastThrusting = coef || lastThrusting
-  }
-  
-  function thrust(ship){
-    ship.acceleration.x += SHIP_THRUST * Math.cos(ship.angle) * ship.thrusting
-    ship.acceleration.y += SHIP_THRUST * Math.sin(ship.angle) * ship.thrusting
-  }
-
-  function slowDown(ship){
-    ship.acceleration.x -= FRICTION * ship.acceleration.x * lastThrusting
-    ship.acceleration.y -= FRICTION * ship.acceleration.y * lastThrusting
-  }
-
-  function collideWith(object){
-    this.collisions.push(object)
-    checkIfAlive(this)
-  }
-
-  function resetCollision(){
-    this.collisions = [];
-  }
-
-  function checkIfAlive(ship){
-    if(ship.collisions.some(objct => objct.category === 'asteroid')){
-      ship.isAlive = false
-      ship.isShooting = false
-      ship.rotate(0)
-      ship.toggleThrust(0)
-      ship.emmit?.('gameover')
-    }
-  }
-
-  function allowShooting(input){
-    this.isShooting = input
-  }
-
-  function shoot(ship){
-    ship.reloading = RELOAD_TIME
-    ship.emmit?.('shoot', {
-      x: ship.getShape().points[0][0],
-      y: ship.getShape().points[0][1],
-      angle: ship.angle,
-    })
-  }
-
-  function reset(posX, posY){
-    this.x = posX
-    this.y = posY
-    this.angle = 90 / 180 * Math.PI
-    this.acceleration = {x:0, y:0}
-    this.isAlive = true
-  }
-
-  function resetGame(){
-    this.emmit?.('resetGame')
-  }
-
-  function update(FPS = 30){
-    // rotation
-    this.angle += this.rotation
-    // thrust
-    if(this.thrusting) thrust(this)
-      else slowDown(this);
-    // movement
-    this.x += this.acceleration.x
-    this.y -= this.acceleration.y
-    // shooting
-    if(this.reloading >= 0) this.reloading -= 1 / FPS;
-    if(this.isShooting && this.reloading <= 0) shoot(this);
-  }
-
-  return {
+  const self = {
     category: 'ship',
     x: posX,
     y: posY,
@@ -123,15 +19,92 @@ export default function createShip(posX, posY){
     isAlive: true,
     isShooting: false,
     reloading: 0, // seconds left to reload after shot
-    // methods
-    getShape,
-    rotate,
-    toggleThrust,
-    update,
-    collideWith,
-    resetCollision,
-    allowShooting,
-    reset,
-    resetGame,
+  };
+
+  const shipMethods = self => ({
+    getShape: () => {
+      const shape = {
+        lineWidth: SHIP_LENGTH / 10,
+        points: [],
+        color: self.isAlive ? 'white' : 'grey'
+      };
+      shape.points.push([
+        self.x + self.size * Math.cos(self.angle), 
+        self.y - self.size * Math.sin(self.angle)
+      ]) // nose
+      shape.points.push([
+        self.x + self.size * Math.cos(self.angle + 145 / 180 * Math.PI), 
+        self.y - self.size * Math.sin(self.angle + 145 / 180 * Math.PI)
+      ]) // left corner
+      shape.points.push([
+        self.x + self.size * Math.cos(self.angle +  Math.PI) * 0.75, // 0.75 - for curvy back
+        self.y - self.size * Math.sin(self.angle +  Math.PI) * 0.75
+      ]) // back
+      shape.points.push([
+        self.x + self.size * Math.cos(self.angle - 145 / 180 * Math.PI), 
+        self.y - self.size * Math.sin(self.angle - 145 / 180 * Math.PI)
+      ]) // right corner
+      return shape
+    },
+    rotate: (coef) => {self.rotation = (TURN_SPEED / 180 * Math.PI) * coef},
+    toggleThrust: (coef) => {
+      self.thrusting = coef
+      lastThrusting = coef || lastThrusting
+    },
+    allowShooting: (input) => {self.isShooting = input},
+    update: (FPS = 30) => {
+      // rotation
+      self.angle += self.rotation
+      // thrust
+      if(self.thrusting) thrust(self)
+        else slowDown(self);
+      // movement
+      self.x += self.acceleration.x
+      self.y -= self.acceleration.y
+      // shooting
+      if(self.reloading >= 0) self.reloading -= 1 / FPS;
+      if(self.isShooting && self.reloading <= 0) shoot(self);
+      checkIfAlive(self)
+    },
+    reset: (posX, posY) => {
+      self.x = posX
+      self.y = posY
+      self.angle = 90 / 180 * Math.PI
+      self.acceleration = {x:0, y:0}
+      self.isAlive = true
+      self.collisions = []
+    },
+    resetGame: () => {self.emmit?.('resetGame')}
+  })
+
+  return Object.assign(self, shipMethods(self))
+
+
+  // "private" methods
+  function thrust(self){
+    self.acceleration.x += SHIP_THRUST * Math.cos(ship.angle) * self.thrusting
+    self.acceleration.y += SHIP_THRUST * Math.sin(ship.angle) * self.thrusting
+  }
+  function slowDown(self){
+    self.acceleration.x -= FRICTION * self.acceleration.x * lastThrusting
+    self.acceleration.y -= FRICTION * self.acceleration.y * lastThrusting
+  }
+  function checkIfAlive(self){
+    if(self.collisions.some(objct => objct.category === 'asteroid')){
+      self.isAlive = false
+      self.isShooting = false
+      self.rotate(0)
+      self.toggleThrust(0)
+      self.emmit?.('gameover')
+    }
+  }
+  function shoot(self){
+    self.reloading = RELOAD_TIME
+    // create bullet object
+    self.emmit?.('shoot', {
+      x: self.getShape().points[0][0],
+      y: self.getShape().points[0][1],
+      angle: self.angle,
+    })
   }
 }
