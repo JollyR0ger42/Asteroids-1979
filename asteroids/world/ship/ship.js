@@ -1,6 +1,6 @@
 export default function createShip(posX, posY){
   const SHIP_LENGTH = 15;
-  const TURN_SPEED = 180; // degrees per sec
+  const TURN_SPEED = 200; // degrees per sec
   const SHIP_THRUST = 5; // acceleration in px per sec
   const FRICTION = 0.33; // ship slowdown
   const RELOAD_TIME = 0.33; // seconds to reload
@@ -80,10 +80,10 @@ export default function createShip(posX, posY){
   return Object.assign(self, shipMethods(self))
 
 
-  // "private" methods
+  // private methods
   function thrust(self){
-    self.acceleration.x += SHIP_THRUST * Math.cos(ship.angle) * self.thrusting
-    self.acceleration.y += SHIP_THRUST * Math.sin(ship.angle) * self.thrusting
+    self.acceleration.x += SHIP_THRUST * Math.cos(self.angle) * self.thrusting
+    self.acceleration.y += SHIP_THRUST * Math.sin(self.angle) * self.thrusting
   }
   function slowDown(self){
     self.acceleration.x -= FRICTION * self.acceleration.x * lastThrusting

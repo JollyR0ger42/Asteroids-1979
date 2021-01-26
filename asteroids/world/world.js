@@ -69,7 +69,6 @@ export default function createWorld(width = 100, height = 100, FPS = 30){
     } else if (asteroid) {
       world.score += 5
     }
-    console.log('Score:', world.score)
   }
 
   function listener(eventName, payload){
